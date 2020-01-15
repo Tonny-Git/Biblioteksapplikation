@@ -1,4 +1,8 @@
 package com.company;
 
-public class User {
+public class User extends Account {
+
+    public User(String username, String password) {
+        super(username, password);
+    }
 }

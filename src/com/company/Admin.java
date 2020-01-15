@@ -1,4 +1,8 @@
 package com.company;
 
-public class Admin {
+public class Admin extends Account {
+
+    public Admin(String username, String password) {
+        super(username, password);
+    }
 }
