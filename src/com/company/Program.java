@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Program {
-    private ArrayList<Admin> admins = new ArrayList<>();
-    private ArrayList<User> users = new ArrayList<>();
-    Scanner scanner = new Scanner(System.in);
+    private ArrayList<Account> admins = new ArrayList<>();
+    private ArrayList<Account> users = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
 
     public Program() {
         startMenu();
     }
 
-    public void startMenu() {
+    private void startMenu() {
         while (true) {
             System.out.println("Welcome, please log in.");
             System.out.println("[1] Log in as user ");
@@ -23,10 +23,10 @@ public class Program {
 
             switch (answer) {
                 case "1":
-                    //
+                    logIn(true);
                     break;
                 case "2":
-                    //
+                    logIn(false);
                     break;
                 case "3":
                     createAccount();
@@ -72,13 +72,69 @@ public class Program {
 
         System.out.println("Enter account name");
         String name = scanner.nextLine();
-        System.out.println("Enter password");
-        String password = scanner.nextLine();
+        String password;
+        while (true) {
+            System.out.println("Enter password");
+            password = scanner.nextLine();
+            if (password.equals("") || password.equals("0")) {
+                System.out.println("The password can't be empty or 0");
+                continue;
+            }
+            break;
+        }
 
         if (createAdminAccount) {
             admins.add(new Admin(name, password));
         } else {
             users.add(new User(name, password));
         }
+    }
+
+    private void logIn(boolean isUser) {
+        ArrayList<Account> accounts;
+        if (isUser) {
+            accounts = users;
+        } else {
+            accounts = admins;
+        }
+
+        if (accounts == null || accounts.size() == 0) {
+            System.out.println("There are no accounts. Please create an account.");
+            return;
+        }
+
+        int answer;
+        while (true) {
+            System.out.println("Please select your account");
+            for (int i = 0; i < accounts.size(); i++) {
+                System.out.printf("[%d] %s%n", i+1, accounts.get(i).getUsername());
+            }
+
+            try {
+                answer = Integer.parseInt(scanner.nextLine());
+                accounts.get(answer-1); //Kollar om indexet finns i arrayen.
+            } catch (Exception e) {
+                System.out.println("Wrong input! try again!");
+                continue;
+            }
+            break;
+        }
+
+        while (true) {
+            System.out.println("Please enter password for " + accounts.get(answer-1).getUsername() + " or press 0 to exit");
+            String passwordAnswer = scanner.nextLine();
+            if (accounts.get(answer-1).isPasswordCorrect(passwordAnswer)) {
+                loggedInMenu(accounts.get(answer-1));
+                return;
+            } else if (passwordAnswer.equals("0")) {
+                return;
+            } else {
+                System.out.println("Wrong password! Please try again");
+            }
+        }
+    }
+
+    private void loggedInMenu(Account loggedInPerson) {
+        System.out.println("Hello");
     }
 }
