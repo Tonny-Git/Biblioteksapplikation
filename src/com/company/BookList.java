@@ -1,7 +1,42 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BookList {
-    ArrayList<Book> books = new ArrayList<>();
+    private ArrayList<Book> books = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
+
+    public void seeAllBooks() {
+        for (int i = 0; i < books.size(); i++) {
+            System.out.printf("%d. %s", i+1, books.get(i).getTitle());
+        }
+        seeBookAttributes();
+    }
+
+    private int userIntSelection() {
+        int answer;
+        while (true) {
+            try {
+                answer = Integer.parseInt(scanner.nextLine());
+                break;
+            } catch (Exception e) {
+                System.out.println("Wrong input. Please try again!");
+            }
+        }
+        return answer;
+    }
+
+    public void seeBookAttributes() {
+        System.out.println("Select a book to see description/option or press 0 to exit");
+        int bookChoice = userIntSelection();
+        if (bookChoice == 0) {
+            return;
+        }
+        try {
+            System.out.println(books.get(bookChoice-1));
+        } catch (Exception e) {
+            System.out.println("This book dosen't exits");
+        }
+    }
 }

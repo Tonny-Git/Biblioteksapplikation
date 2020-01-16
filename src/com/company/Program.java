@@ -138,13 +138,11 @@ public class Program {
     //Jobbar vidare med denna metoden!
     private void loggedInMenu(Account loggedInPerson) {
         while (true) {
-
+            System.out.println("[1] See all books");
 
             if (loggedInPerson instanceof Admin) {
-                System.out.println("is admin");
                 // adminOptions();
             } else {
-                System.out.println("is user");
                 // userOptions();
             }
             System.out.println("[0] Return to start menu");
@@ -152,6 +150,9 @@ public class Program {
             String answer = scanner.nextLine();
 
             switch (answer) {
+                case "1":
+                    bookList.seeAllBooks();
+                    break;
                 case "0":
                     return;
                 default:

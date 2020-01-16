@@ -11,4 +11,18 @@ public class Book {
         this.author = author;
         this.description = description;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", description='" + description + '\'' +
+                ", isAvailable=" + isAvailable +
+                '}';
+    }
 }
