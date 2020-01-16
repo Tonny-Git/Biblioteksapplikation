@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Program {
     private ArrayList<Account> admins = new ArrayList<>();
     private ArrayList<Account> users = new ArrayList<>();
+    private BookList bookList = new BookList();
     private Scanner scanner = new Scanner(System.in);
 
     public Program() {
@@ -134,7 +135,32 @@ public class Program {
         }
     }
 
+    //Jobbar vidare med denna metoden!
     private void loggedInMenu(Account loggedInPerson) {
-        System.out.println("Hello");
+        while (true) {
+
+
+            if (loggedInPerson instanceof Admin) {
+                System.out.println("is admin");
+                // adminOptions();
+            } else {
+                System.out.println("is user");
+                // userOptions();
+            }
+            System.out.println("[0] Return to start menu");
+
+            String answer = scanner.nextLine();
+
+            switch (answer) {
+                case "0":
+                    return;
+                default:
+                    System.out.println("This is not a valid input!");
+                    break;
+            }
+        }
+
+
+
     }
 }
