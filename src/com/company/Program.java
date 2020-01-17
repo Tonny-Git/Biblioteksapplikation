@@ -135,19 +135,25 @@ public class Program {
         }
     }
 
-    //Jobbar vidare med denna metoden!
+    //Jobbar vidare med denna metoden och switchOption metoderna
     private void loggedInMenu(Account loggedInPerson) {
         while (true) {
             System.out.println("[1] See all books");
 
             if (loggedInPerson instanceof Admin) {
-                // adminOptions();
+                System.out.println("[2] Add a new book");
+                // adminOptions
             } else {
-                // userOptions();
+                // userOptions
             }
             System.out.println("[0] Return to start menu");
-
             String answer = scanner.nextLine();
+
+            if (loggedInPerson instanceof Admin) {
+                adminSwitchOptions(answer);
+            } else {
+                // userSwitchOptions(answer);
+            }
 
             switch (answer) {
                 case "1":
@@ -160,8 +166,13 @@ public class Program {
                     break;
             }
         }
+    }
 
-
-
+    private void adminSwitchOptions(String answer) {
+        switch (answer) {
+            case "2":
+                bookList.addNewBook();
+                break;
+        }
     }
 }

@@ -27,7 +27,7 @@ public class BookList {
         return answer;
     }
 
-    public void seeBookAttributes() {
+    private void seeBookAttributes() {
         System.out.println("Select a book to see description/option or press 0 to exit");
         int bookChoice = userIntSelection();
         if (bookChoice == 0) {
@@ -38,5 +38,19 @@ public class BookList {
         } catch (Exception e) {
             System.out.println("This book dosen't exits");
         }
+    }
+
+    // Ej klar än
+    public void addNewBook() {
+        System.out.println("Enter title");
+        String title = scanner.nextLine();
+        System.out.println("Enter author");
+        String author = scanner.nextLine();
+        System.out.println("Enter description");
+        String description = scanner.nextLine();
+
+        books.add(new Book(title, author, description));
+        System.out.println(title + " got added to the app\n" + "Press enter to continue. . .");
+        scanner.nextLine();
     }
 }
