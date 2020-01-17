@@ -9,7 +9,7 @@ public class BookList {
 
     public void seeAllBooks() {
         for (int i = 0; i < books.size(); i++) {
-            System.out.printf("%d. %s", i+1, books.get(i).getTitle());
+            System.out.printf("%d. %s%n", i+1, books.get(i).getTitle());
         }
         seeBookAttributes();
     }
@@ -40,7 +40,6 @@ public class BookList {
         }
     }
 
-    // Ej klar än
     public void addNewBook() {
         System.out.println("Enter title");
         String title = scanner.nextLine();
@@ -52,5 +51,9 @@ public class BookList {
         books.add(new Book(title, author, description));
         System.out.println(title + " got added to the app\n" + "Press enter to continue. . .");
         scanner.nextLine();
+    }
+
+    public void removeOldBook() {
+
     }
 }
