@@ -21,6 +21,6 @@ public class Book {
         return  "" + title +
                 " by " + author +
                 "\n" + description +
-                "\n" + (isAvailable ? "This book can be rented": "This book is already rented");
+                "\n" + (isAvailable ? "This book can be rented" : "This book is already rented");
     }
 }

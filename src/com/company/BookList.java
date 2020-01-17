@@ -7,11 +7,11 @@ public class BookList {
     private ArrayList<Book> books = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
 
-    public void seeAllBooks() {
+    public void seeAllBooks(boolean isAdmin) {
         for (int i = 0; i < books.size(); i++) {
             System.out.printf("%d. %s%n", i+1, books.get(i).getTitle());
         }
-        seeBookAttributes();
+        seeBookAttributes(isAdmin);
     }
 
     private int userIntSelection() {
@@ -27,16 +27,51 @@ public class BookList {
         return answer;
     }
 
-    private void seeBookAttributes() {
-        System.out.println("Select a book to see description/option or press 0 to exit");
-        int bookChoice = userIntSelection();
-        if (bookChoice == 0) {
+    private void seeBookAttributes(boolean isAdmin) {
+        while (true) {
+            System.out.println("Select a book to see description/option or press 0 to exit");
+            int bookChoice = userIntSelection();
+            if (bookChoice == 0) {
+                return;
+            }
+            try {
+                System.out.println(books.get(bookChoice-1));
+            } catch (Exception e) {
+                System.out.println("This book dosen't exits");
+                continue;
+            }
+            bookOptions(isAdmin, bookChoice);
             return;
         }
-        try {
-            System.out.println(books.get(bookChoice-1));
-        } catch (Exception e) {
-            System.out.println("This book dosen't exits");
+    }
+
+    private void bookOptions(boolean isAdmin, int bookChoice) {
+        boolean loop = true;
+        while (loop) {
+            System.out.println("What do you want to do?");
+            if (isAdmin) {
+                System.out.println("[1] Remove the book");
+            } else  {
+
+            }
+            System.out.println("[0] Return to menu");
+            String answer = scanner.nextLine();
+
+            switch (answer) {
+                case "1":
+                    if (isAdmin) {
+                        removeOldBook(bookChoice);
+                        loop = false;
+                    } else {
+                        System.out.println("Sorry wrong input!");
+                    }
+                    break;
+                case "0":
+                    return;
+                default:
+                    System.out.println("Sorry wrong input!");
+                    break;
+            }
         }
     }
 
@@ -53,7 +88,8 @@ public class BookList {
         scanner.nextLine();
     }
 
-    public void removeOldBook() {
-
+    public void removeOldBook(int bookChoice) {
+        Book book = books.remove(bookChoice-1);
+        System.out.println("You removed " + book + " from the list.");
     }
 }
