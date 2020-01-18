@@ -157,7 +157,7 @@ public class Program {
 
             switch (answer) {
                 case "1":
-                    bookList.seeAllBooks(loggedInPerson instanceof Admin);
+                    bookList.seeAllBooks(loggedInPerson);
                     break;
                 case "0":
                     return;

@@ -16,6 +16,14 @@ public class Book {
         return title;
     }
 
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
     @Override
     public String toString() {
         return  "" + title +
