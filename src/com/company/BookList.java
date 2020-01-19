@@ -99,8 +99,34 @@ public class BookList {
     }
 
     public void rentBook(User loggedInPerson, int bookChoice) {
-        loggedInPerson.getBorrowedBooks().add(books.get(bookChoice-1));
-        books.get(bookChoice-1).setAvailable(false);
-        System.out.println("You rented the book: " + books.get(bookChoice-1));
+        if (books.get(bookChoice-1).isAvailable()) {
+            loggedInPerson.getBorrowedBooks().add(books.get(bookChoice-1));
+            books.get(bookChoice-1).setAvailable(false);
+            System.out.println("You rented the book: " + books.get(bookChoice-1).getTitle());
+        } else {
+            System.out.println("This book is already rented!");
+        }
+    }
+
+    public void showAndReturnBorrowedBook(User loggedInPerson) {
+        if (loggedInPerson.getBorrowedBooks().size() == 0) {
+            System.out.println("You have not rented any books!");
+        } else {
+            for (int i = 0; i < loggedInPerson.getBorrowedBooks().size(); i++) {
+                System.out.println(i+1 + " " +loggedInPerson.getBorrowedBooks().get(i).getTitle());
+            }
+            System.out.println("Select a book to retun or press 0 to go back");
+
+            try {
+                int answer = Integer.parseInt(scanner.nextLine());
+                if (answer == 0)
+                    return;
+                loggedInPerson.getBorrowedBooks().get(answer-1).setAvailable(true);
+                loggedInPerson.getBorrowedBooks().remove(answer-1);
+            } catch (Exception e) {
+                System.out.println("This is wrong input!");
+            }
+        }
+
     }
 }

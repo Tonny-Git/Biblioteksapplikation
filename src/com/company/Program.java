@@ -138,26 +138,27 @@ public class Program {
     //Jobbar vidare med denna metoden och switchOption metoderna
     private void loggedInMenu(Account loggedInPerson) {
         while (true) {
-            System.out.println("[1] See all books");
+            System.out.println("[1] See all books.");
 
             if (loggedInPerson instanceof Admin) {
-                System.out.println("[2] Add a new book");
-                // adminOptions
+                System.out.println("[2] Add a new book.");
             } else {
-                // userOptions
+                System.out.println("[2] Show your borrowed books.");
             }
-            System.out.println("[0] Return to start menu");
+            System.out.println("[0] Log out");
             String answer = scanner.nextLine();
-
-            if (loggedInPerson instanceof Admin) {
-                adminSwitchOptions(answer);
-            } else {
-                // userSwitchOptions(answer);
-            }
 
             switch (answer) {
                 case "1":
                     bookList.seeAllBooks(loggedInPerson);
+                    break;
+                case "2":
+                    if (loggedInPerson instanceof Admin) {
+                        bookList.addNewBook();
+                    } else if (loggedInPerson instanceof User) {
+                        User user = (User) loggedInPerson;
+                        bookList.showAndReturnBorrowedBook(user);
+                    }
                     break;
                 case "0":
                     return;
@@ -165,14 +166,6 @@ public class Program {
                     System.out.println("This is not a valid input!");
                     break;
             }
-        }
-    }
-
-    private void adminSwitchOptions(String answer) {
-        switch (answer) {
-            case "2":
-                bookList.addNewBook();
-                break;
         }
     }
 }
