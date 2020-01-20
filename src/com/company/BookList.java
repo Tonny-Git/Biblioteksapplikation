@@ -129,4 +129,46 @@ public class BookList {
         }
 
     }
+
+    public void searchAfterBook(Account loggedInPerson) {
+        System.out.println("Enter title or author of an book");
+        String answer = scanner.nextLine().toLowerCase();
+        ArrayList<Book> booksFound = new ArrayList<>();
+        ArrayList<Integer> posistion = new ArrayList<>();
+
+        for (int i = 0; i < books.size(); i++) {
+            if (answer.equals(books.get(i).getTitle().toLowerCase()) || answer.equals(books.get(i).getAuthor().toLowerCase())) {
+                booksFound.add(books.get(i));
+                posistion.add(i);
+            }
+        }
+
+        if (booksFound.size() ==  0)
+            System.out.println("No Books found");
+        else if (booksFound.size() == 1)
+            bookOptions(loggedInPerson, posistion.get(0));
+        else {
+            System.out.println("Select a book or press 0 to exit");
+            for (int i = 0; i < booksFound.size(); i++) {
+                booksFound.get(i).getTitle();
+                System.out.println(i+1 + " " + booksFound.get(i).getTitle());
+            }
+
+            int numberAnswer;
+            try {
+                numberAnswer = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.out.println("Not a valid input!");
+                return;
+            }
+
+            if (numberAnswer-1 >= 0 && numberAnswer < posistion.size()) {
+                bookOptions(loggedInPerson, posistion.get(numberAnswer));
+            } else if (numberAnswer == 0) {
+                return;
+            } else {
+                System.out.println("Not a valid input!");
+            }
+        }
+    }
 }

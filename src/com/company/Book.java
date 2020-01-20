@@ -24,6 +24,10 @@ public class Book {
         isAvailable = available;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
     @Override
     public String toString() {
         return  "" + title +

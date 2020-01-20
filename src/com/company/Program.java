@@ -144,6 +144,7 @@ public class Program {
                 System.out.println("[2] Add a new book.");
             } else {
                 System.out.println("[2] Show your borrowed books.");
+                System.out.println("[3] Search after book.");
             }
             System.out.println("[0] Log out");
             String answer = scanner.nextLine();
@@ -158,6 +159,13 @@ public class Program {
                     } else if (loggedInPerson instanceof User) {
                         User user = (User) loggedInPerson;
                         bookList.showAndReturnBorrowedBook(user);
+                    }
+                    break;
+                case "3":
+                    if (loggedInPerson instanceof User) {
+                        bookList.searchAfterBook(loggedInPerson);
+                    } else {
+                        System.out.println("This is not a valid input!");
                     }
                     break;
                 case "0":
