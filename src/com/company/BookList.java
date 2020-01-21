@@ -7,6 +7,13 @@ public class BookList {
     private ArrayList<Book> books = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
 
+    //Ta Bort senare
+    public BookList() {
+        books.add(new Book("Harry Potter", "Jk Rowling", "Harry and his friends"));
+        books.add(new Book("Harry Potter 2", "Jk Rowling", "Harry and his friends"));
+        books.add(new Book("Zelda", "Nintendo", "Link try to save Zelda"));
+    }
+
     public void seeAllBooks(Account loggedInPerson) {
         for (int i = 0; i < books.size(); i++) {
             System.out.printf("%d. %s%n", i+1, books.get(i).getTitle());
@@ -154,13 +161,7 @@ public class BookList {
                 System.out.println(i+1 + " " + booksFound.get(i).getTitle());
             }
 
-            int numberAnswer;
-            try {
-                numberAnswer = Integer.parseInt(scanner.nextLine());
-            } catch (Exception e) {
-                System.out.println("Not a valid input!");
-                return;
-            }
+            int numberAnswer = userIntSelection();
 
             if (numberAnswer-1 >= 0 && numberAnswer < posistion.size()) {
                 bookOptions(loggedInPerson, posistion.get(numberAnswer));
@@ -168,6 +169,77 @@ public class BookList {
                 return;
             } else {
                 System.out.println("Not a valid input!");
+            }
+        }
+    }
+
+
+    // Working on fixing old methods
+    public ArrayList<Book> searchThroughArray (String option) {
+        ArrayList<Book> booksFound = new ArrayList<>();
+        for (int i = 0; i < books.size(); i++) {
+            if (option.equals("ShowAllAvailableBooks")) {
+                if (books.get(i).isAvailable())
+                    booksFound.add(books.get(i));
+            } else if (option.equals("ShowAllBorrowedBooks")) {
+                if (!books.get(i).isAvailable())
+                    booksFound.add(books.get(i));
+            }
+        }
+        return booksFound;
+    }
+
+    private void printBookNames(ArrayList<Book> books) {
+        for (int i = 0; i < books.size(); i++)
+            System.out.println(i+1 + " " + books.get(i).getTitle());
+    }
+
+    public void selectBook(Account loggedInPerson, ArrayList<Book> books) {
+        while (true) {
+            printBookNames(books);
+            System.out.println("Select a book to see description/option or press 0 to exit");
+            int bookChoice = userIntSelection();
+            if (bookChoice == 0)
+                return;
+
+            try {
+                System.out.println(books.get(bookChoice-1));
+            } catch (Exception e) {
+                System.out.println("This book do not exist");
+                continue;
+            }
+            bookMethods(loggedInPerson, books.get(bookChoice-1));
+        }
+    }
+
+    private void bookMethods (Account loggedInPerson, Book book) {
+        while (true) {
+            System.out.println("What do you want to do?");
+            if (loggedInPerson instanceof User) {
+                System.out.println("[1] Rent the book");
+            }
+
+            System.out.println("[0] Return to menu");
+            String answer = scanner.nextLine();
+
+            if (loggedInPerson instanceof User) {
+                switch (answer) {
+                    case "1":
+                        User person = (User)loggedInPerson;
+                        book.setAvailable(false);
+                        person.getBorrowedBooks().add(book);
+                        return;
+                    case "0":
+                        return;
+                    default:
+                        System.out.println("Sorry wrong input!");
+                        break;
+                }
+            } else {
+                if (answer.equals("0"))
+                    return;
+                else
+                    System.out.println("Sorry wrong input!");
             }
         }
     }

@@ -142,9 +142,12 @@ public class Program {
 
             if (loggedInPerson instanceof Admin) {
                 System.out.println("[2] Add a new book.");
+                System.out.println("[3] Remove a book"); //fixa senare
+                System.out.println("[4] Show all borrowed books");
             } else {
                 System.out.println("[2] Show your borrowed books.");
                 System.out.println("[3] Search after book.");
+                System.out.println("[4] Show all available books.");
             }
             System.out.println("[0] Log out");
             String answer = scanner.nextLine();
@@ -168,8 +171,13 @@ public class Program {
                         System.out.println("This is not a valid input!");
                     }
                     break;
+                case "4":
+                    if (loggedInPerson instanceof User)
+                        bookList.selectBook(loggedInPerson, bookList.searchThroughArray("ShowAllAvailableBooks"));
+                    else
+                        bookList.selectBook(loggedInPerson, bookList.searchThroughArray("ShowAllBorrowedBooks"));
                 case "0":
-                    return;
+                    break;
                 default:
                     System.out.println("This is not a valid input!");
                     break;
