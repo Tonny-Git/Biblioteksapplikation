@@ -10,6 +10,9 @@ public class Program {
     private Scanner scanner = new Scanner(System.in);
 
     public Program() {
+        users.add(new User("asdf", "1234"));
+        users.add(new User("qwer", "1234"));
+        users.add(new User("zxcv", "1234"));
         startMenu();
     }
 
@@ -142,8 +145,9 @@ public class Program {
 
             if (loggedInPerson instanceof Admin) {
                 System.out.println("[2] Add a new book.");
-                System.out.println("[3] Remove a book"); //fixa senare
+                System.out.println("[3] Show all users");
                 System.out.println("[4] Show all borrowed books");
+                System.out.println("[?] Remove a book"); //fixa senare
             } else {
                 System.out.println("[2] Show your borrowed books.");
                 System.out.println("[3] Search after book.");
@@ -168,7 +172,7 @@ public class Program {
                     if (loggedInPerson instanceof User) {
                         bookList.searchAfterBook(loggedInPerson);
                     } else {
-                        System.out.println("This is not a valid input!");
+                        showAllUsers();
                     }
                     break;
                 case "4":
@@ -177,11 +181,50 @@ public class Program {
                     else
                         bookList.selectBook(loggedInPerson, bookList.searchThroughArray("ShowAllBorrowedBooks"));
                 case "0":
-                    break;
+                    return;
                 default:
                     System.out.println("This is not a valid input!");
                     break;
             }
+        }
+    }
+
+    private void showAllUsers() {
+        for (int i = 0; i < users.size(); i++) {
+            System.out.println(i+1 + " " + users.get(i).getUsername());
+        }
+        selectUser();
+    }
+
+    private void selectUser() {
+        while (true) {
+            System.out.println("Select an user to see borrowed books or press 0 to exit");
+            int answer;
+            try {
+                answer = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.out.println("Wrong input! please try again!");
+                continue;
+            }
+
+            if (answer ==  0) {
+                return;
+            }
+
+            try {
+                User user = (User) users.get(answer-1);
+                booksBorrowedByUser(user);
+            } catch (Exception e) {
+                System.out.println("Wrong input! please try again!");
+                continue;
+            }
+            return;
+        }
+    }
+
+    private void booksBorrowedByUser(User user) {
+        for (int i = 0; i < user.getBorrowedBooks().size(); i++) {
+            System.out.println(i+1 + " " + user.getBorrowedBooks().get(i).getTitle());
         }
     }
 }
