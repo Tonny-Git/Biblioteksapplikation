@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MethodUtility {
@@ -20,5 +21,27 @@ public class MethodUtility {
             break;
         }
         return answer;
+    }
+
+    public static int intSelectionArray(int arrayListSize) {
+        int answer;
+        while (true) {
+            try {
+                answer = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.out.println("Wrong input. Please try again!");
+                continue;
+            }
+            if (answer < arrayListSize && answer >= 0) {
+                return answer;
+            } else
+                System.out.println("Number out of bounds! Please try again!");
+        }
+    }
+
+    public static void printErrorMessage() {
+        System.out.println("This is wrong input! Please try again!");
+        System.out.println("Press enter to continue. . .");
+        scanner.nextLine();
     }
 }

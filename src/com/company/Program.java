@@ -19,29 +19,23 @@ public class Program {
     private void startMenu() {
         while (true) {
             System.out.println("Welcome, please log in.");
-            System.out.println("[1] Log in as user ");
-            System.out.println("[2] Log in as admin");
-            System.out.println("[3] Create a new account");
+            System.out.println("[1] Log in");
+            System.out.println("[2] Create a new account");
             System.out.println("[0] Exit");
             String answer = scanner.nextLine();
 
             switch (answer) {
                 case "1":
-                    logIn(true);
+                    logIn();
                     break;
                 case "2":
-                    logIn(false);
-                    break;
-                case "3":
                     createAccount();
                     break;
                 case "0":
                     System.out.println("Thank you for using this app!");
                     return;
                 default:
-                    System.out.println("This is wrong input! Please try again!");
-                    System.out.println("Press enter to continue. . .");
-                    scanner.nextLine();
+                    MethodUtility.printErrorMessage();
                     break;
             }
         }
@@ -77,41 +71,30 @@ public class Program {
         }
     }
 
-    private void logIn(boolean isUser) {
-        ArrayList<Account> accounts;
-        if (isUser) {
-            accounts = users;
-        } else {
-            accounts = admins;
-        }
+    private void logIn() {
+        ArrayList<Account> accounts = users;
+        accounts.addAll(admins);
 
         if (accounts == null || accounts.size() == 0) {
             System.out.println("There are no accounts. Please create an account.");
             return;
         }
 
-        int answer;
-        while (true) {
-            System.out.println("Please select your account");
-            for (int i = 0; i < accounts.size(); i++) {
-                System.out.printf("[%d] %s%n", i+1, accounts.get(i).getUsername());
-            }
-
-            try {
-                answer = Integer.parseInt(scanner.nextLine());
-                accounts.get(answer-1); //Kollar om indexet finns i arrayen.
-            } catch (Exception e) {
-                System.out.println("Wrong input! try again!");
-                continue;
-            }
-            break;
+        System.out.println("Please select your account");
+        for (int i = 0; i < accounts.size(); i++) {
+            System.out.printf("[%d] %s%n", i+1, accounts.get(i).getUsername());
         }
+        int answer = MethodUtility.intSelectionArray(accounts.size());
+        Account account = accounts.get(answer);
 
         while (true) {
-            System.out.println("Please enter password for " + accounts.get(answer-1).getUsername() + " or press 0 to exit");
+            System.out.println("Please enter password for " + account.getUsername() + " or press 0 to exit");
             String passwordAnswer = scanner.nextLine();
-            if (accounts.get(answer-1).isPasswordCorrect(passwordAnswer)) {
-                loggedInMenu(accounts.get(answer-1));
+            if (account.isPasswordCorrect(passwordAnswer)) {
+                if (account instanceof User)
+                    loggedInUserMenu((User) account);
+                else if (account instanceof Admin)
+                    loggedInAdminMenu((Admin) account);
                 return;
             } else if (passwordAnswer.equals("0")) {
                 return;
@@ -121,22 +104,12 @@ public class Program {
         }
     }
 
-    //Jobbar vidare med denna metoden och switchOption metoderna
-    private void loggedInMenu(Account loggedInPerson) {
+    private void loggedInUserMenu(User loggedInPerson) {
         while (true) {
             System.out.println("[1] See all books.");
-
-            if (loggedInPerson instanceof Admin) {
-                System.out.println("[2] Add a new book.");
-                System.out.println("[3] Show all users");
-                System.out.println("[4] Show all borrowed books");
-                System.out.println("[5] Search after an user");
-                System.out.println("[?] Remove a book"); //fixa senare
-            } else {
-                System.out.println("[2] Show your borrowed books.");
-                System.out.println("[3] Search after book.");
-                System.out.println("[4] Show all available books.");
-            }
+            System.out.println("[2] Show your borrowed books.");
+            System.out.println("[3] Search after book.");
+            System.out.println("[4] Show all available books.");
             System.out.println("[0] Log out");
             String answer = scanner.nextLine();
 
@@ -145,30 +118,51 @@ public class Program {
                     bookList.seeAllBooks(loggedInPerson);
                     break;
                 case "2":
-                    if (loggedInPerson instanceof Admin) {
-                        bookList.addNewBook();
-                    } else if (loggedInPerson instanceof User) {
-                        User user = (User) loggedInPerson;
-                        bookList.showAndReturnBorrowedBook(user);
-                    }
+                    User user = (User) loggedInPerson;
+                    bookList.showAndReturnBorrowedBook(user);
                     break;
                 case "3":
-                    if (loggedInPerson instanceof User) {
-                        bookList.searchAfterBook(loggedInPerson);
-                    } else {
-                        showAllUsers();
-                    }
+                    bookList.searchAfterBook(loggedInPerson);
                     break;
                 case "4":
-                    if (loggedInPerson instanceof User)
-                        bookList.selectBook(loggedInPerson, bookList.searchThroughArray("ShowAllAvailableBooks"));
-                    else
-                        bookList.selectBook(loggedInPerson, bookList.searchThroughArray("ShowAllBorrowedBooks"));
+                    bookList.selectBook(loggedInPerson, bookList.searchThroughArray("ShowAllAvailableBooks"));
+                    break;
+                case "0":
+                    return;
+                default:
+                    System.out.println("This is not a valid input!");
+                    break;
+            }
+        }
+    }
+
+    //Fixa Remove book
+    private void loggedInAdminMenu(Admin loggedInPerson) {
+        while (true) {
+            System.out.println("[1] See all books.");
+            System.out.println("[2] Add a new book.");
+            System.out.println("[3] Show all users");
+            System.out.println("[4] Show all borrowed books");
+            System.out.println("[5] Search after an user");
+            System.out.println("[?] Remove a book"); //fixa senare
+            System.out.println("[0] Log out");
+            String answer = scanner.nextLine();
+
+            switch (answer) {
+                case "1":
+                    bookList.seeAllBooks(loggedInPerson);
+                    break;
+                case "2":
+                    bookList.addNewBook();
+                    break;
+                case "3":
+                    showAllUsers();
+                    break;
+                case "4":
+                    bookList.selectBook(loggedInPerson, bookList.searchThroughArray("ShowAllBorrowedBooks"));
+                    break;
                 case "5":
-                    if (loggedInPerson instanceof Admin) {
-                        searchAfterUser();
-                    } else
-                        System.out.println("This is not a valid input!");
+                    searchAfterUser();
                     break;
                 case "0":
                     return;
