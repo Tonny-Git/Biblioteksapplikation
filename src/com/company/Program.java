@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Program {
-    private ArrayList<Account> admins = new ArrayList<>();
-    private ArrayList<Account> users = new ArrayList<>();
+    private ArrayList<Admin> admins = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
     private BookList bookList = new BookList();
     private Scanner scanner = new Scanner(System.in);
 
     public Program() {
-        users.add(new User("asdf", "1234"));
-        users.add(new User("qwer", "1234"));
-        users.add(new User("zxcv", "1234"));
         startMenu();
     }
 
@@ -72,7 +69,8 @@ public class Program {
     }
 
     private void logIn() {
-        ArrayList<Account> accounts = users;
+        ArrayList<Account> accounts = new ArrayList<>();
+        accounts.addAll(users);
         accounts.addAll(admins);
 
         if (accounts == null || accounts.size() == 0) {
@@ -80,11 +78,13 @@ public class Program {
             return;
         }
 
-        System.out.println("Please select your account");
+        System.out.println("Please select your account or press 0 to exit");
         for (int i = 0; i < accounts.size(); i++) {
             System.out.printf("[%d] %s%n", i+1, accounts.get(i).getUsername());
         }
         int answer = MethodUtility.intSelectionArray(accounts.size());
+        if (answer == -1)
+            return;
         Account account = accounts.get(answer);
 
         while (true) {
@@ -118,8 +118,7 @@ public class Program {
                     bookList.seeAllBooks(loggedInPerson);
                     break;
                 case "2":
-                    User user = (User) loggedInPerson;
-                    bookList.showAndReturnBorrowedBook(user);
+                    bookList.showAndReturnBorrowedBook(loggedInPerson);
                     break;
                 case "3":
                     bookList.searchAfterBook(loggedInPerson);
@@ -181,51 +180,22 @@ public class Program {
     }
 
     private void selectUser() {
-        while (true) {
-            System.out.println("Select an user to see borrowed books or press 0 to exit");
-            int answer;
-            try {
-                answer = Integer.parseInt(scanner.nextLine());
-            } catch (Exception e) {
-                System.out.println("Wrong input! please try again!");
-                continue;
-            }
-
-            if (answer ==  0) {
-                return;
-            }
-
-            try {
-                User user = (User) users.get(answer-1);
-                booksBorrowedByUser(user);
-            } catch (Exception e) {
-                System.out.println("Wrong input! please try again!");
-                continue;
-            }
-            return;
-        }
-    }
-
-    private void booksBorrowedByUser(User user) {
-        for (int i = 0; i < user.getBorrowedBooks().size(); i++) {
-            System.out.println(i+1 + " " + user.getBorrowedBooks().get(i).getTitle());
+        System.out.println("Select an user to see borrowed books or press 0 to exit");
+        int answer = MethodUtility.intSelectionArray(users.size());
+        if (answer != -1) {
+            users.get(answer).printNameOfBorrowedBooks();
         }
     }
 
     private void searchAfterUser() {
-        System.out.println("Enter title or author of an book");
+        System.out.println("Enter name of an user");
         String answer = scanner.nextLine().toLowerCase();
-        User user = null;
-
-        for (int i = 0; i < users.size(); i++) {
-            if (answer.equals(users.get(i).getUsername())) {
-                user = (User) users.get(i);
+        for (User user : users) {
+            if (answer.toLowerCase().equals(user.getUsername().toLowerCase())) {
+                user.printNameOfBorrowedBooks();
+                return;
             }
         }
-
-        if (user ==  null)
-            System.out.println("No Books found");
-        else
-            booksBorrowedByUser(user);
+        System.out.println("No user found.");
     }
 }

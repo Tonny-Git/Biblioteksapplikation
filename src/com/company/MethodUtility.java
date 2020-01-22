@@ -32,8 +32,8 @@ public class MethodUtility {
                 System.out.println("Wrong input. Please try again!");
                 continue;
             }
-            if (answer < arrayListSize && answer >= 0) {
-                return answer;
+            if (answer <= arrayListSize && answer >= 0) {
+                return answer-1;
             } else
                 System.out.println("Number out of bounds! Please try again!");
         }
