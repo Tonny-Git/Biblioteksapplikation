@@ -48,49 +48,32 @@ public class Program {
     }
 
     private void createAccount() {
-        boolean loop = true;
-        boolean createAdminAccount = false;
-        while (loop) {
+        while (true) {
             System.out.println("[1] For user account");
             System.out.println("[2] For admin account");
             System.out.println("[0] Go back to menu");
-
             String answer = scanner.nextLine();
+
+            String userName = "";
+            String password = "";
+            if (answer.equals("1") || answer.equals("2")) {
+                userName = MethodUtility.accountAndPasswordCheck("name");
+                password = MethodUtility.accountAndPasswordCheck("password");
+            }
 
             switch (answer) {
                 case "1":
-                    createAdminAccount = false;
-                    loop = false;
-                    break;
+                    users.add(new User(userName, password));
+                    return;
                 case "2":
-                    createAdminAccount = true;
-                    loop = false;
-                    break;
+                    admins.add(new Admin(userName, password));
+                    return;
                 case "0":
                     return;
                 default:
                     System.out.println("This is wrong input! Please try again!");
                     break;
             }
-        }
-
-        System.out.println("Enter account name");
-        String name = scanner.nextLine();
-        String password;
-        while (true) {
-            System.out.println("Enter password");
-            password = scanner.nextLine();
-            if (password.equals("") || password.equals("0")) {
-                System.out.println("The password can't be empty or 0");
-                continue;
-            }
-            break;
-        }
-
-        if (createAdminAccount) {
-            admins.add(new Admin(name, password));
-        } else {
-            users.add(new User(name, password));
         }
     }
 
