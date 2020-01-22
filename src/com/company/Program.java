@@ -147,6 +147,7 @@ public class Program {
                 System.out.println("[2] Add a new book.");
                 System.out.println("[3] Show all users");
                 System.out.println("[4] Show all borrowed books");
+                System.out.println("[5] Search after an user");
                 System.out.println("[?] Remove a book"); //fixa senare
             } else {
                 System.out.println("[2] Show your borrowed books.");
@@ -180,6 +181,12 @@ public class Program {
                         bookList.selectBook(loggedInPerson, bookList.searchThroughArray("ShowAllAvailableBooks"));
                     else
                         bookList.selectBook(loggedInPerson, bookList.searchThroughArray("ShowAllBorrowedBooks"));
+                case "5":
+                    if (loggedInPerson instanceof Admin) {
+                        searchAfterUser();
+                    } else
+                        System.out.println("This is not a valid input!");
+                    break;
                 case "0":
                     return;
                 default:
@@ -226,5 +233,22 @@ public class Program {
         for (int i = 0; i < user.getBorrowedBooks().size(); i++) {
             System.out.println(i+1 + " " + user.getBorrowedBooks().get(i).getTitle());
         }
+    }
+
+    private void searchAfterUser() {
+        System.out.println("Enter title or author of an book");
+        String answer = scanner.nextLine().toLowerCase();
+        User user = null;
+
+        for (int i = 0; i < users.size(); i++) {
+            if (answer.equals(users.get(i).getUsername())) {
+                user = (User) users.get(i);
+            }
+        }
+
+        if (user ==  null)
+            System.out.println("No Books found");
+        else
+            booksBorrowedByUser(user);
     }
 }
