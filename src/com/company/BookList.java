@@ -22,11 +22,17 @@ public class BookList {
     }
 
     private void seeBookAttributes(Account loggedInPerson, ArrayList<Book> books) {
-        System.out.println("Select a book to see description/option or press 0 to exit");
+        if (loggedInPerson instanceof User) {
+            System.out.println("Select a book to see description/option or press 0 to exit");
+        } else {
+            System.out.println("Select a book to remove it or press 0 to exit");
+        }
         int bookChoice = MethodUtility.intSelectionArray(books.size());
-        if (bookChoice != -1) {
+        if (bookChoice != -1 && loggedInPerson instanceof User) {
             System.out.println(books.get(bookChoice));
             bookOptions(loggedInPerson, books.get(bookChoice));
+        } else if (bookChoice != -1) {
+            removeOldBook(bookChoice);
         }
     }
 
@@ -67,8 +73,8 @@ public class BookList {
     }
 
     public void removeOldBook(int bookChoice) {
-        if (books.get(bookChoice-1).isAvailable()) {
-            Book book = books.remove(bookChoice-1);
+        if (books.get(bookChoice).isAvailable()) {
+            Book book = books.remove(bookChoice);
             System.out.println("You removed " + book + " from the list.");
         } else {
             System.out.println("You can't remove a borrowed book!");

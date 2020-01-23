@@ -143,7 +143,6 @@ public class Program {
             System.out.println("[3] Show all users");
             System.out.println("[4] Show all borrowed books");
             System.out.println("[5] Search after an user");
-            System.out.println("[?] Remove a book"); //fixa senare
             System.out.println("[0] Log out");
             String answer = scanner.nextLine();
 
