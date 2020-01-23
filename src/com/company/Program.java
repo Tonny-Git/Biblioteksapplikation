@@ -124,7 +124,7 @@ public class Program {
                     bookList.searchAfterBook(loggedInPerson);
                     break;
                 case "4":
-                    bookList.selectBook(loggedInPerson, bookList.searchThroughArray("ShowAllAvailableBooks"));
+                    bookList.searchThroughArray(loggedInPerson, "ShowAllAvailableBooks");
                     break;
                 case "0":
                     return;
@@ -158,7 +158,7 @@ public class Program {
                     showAllUsers();
                     break;
                 case "4":
-                    bookList.selectBook(loggedInPerson, bookList.searchThroughArray("ShowAllBorrowedBooks"));
+                    bookList.searchThroughArray(loggedInPerson, "ShowAllBorrowedBooks");
                     break;
                 case "5":
                     searchAfterUser();

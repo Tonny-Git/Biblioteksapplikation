@@ -18,24 +18,10 @@ public class BookList {
         for (int i = 0; i < books.size(); i++) {
             System.out.printf("%d. %s%n", i+1, books.get(i).getTitle());
         }
-        seeBookAttributes(loggedInPerson);
+        seeBookAttributes(loggedInPerson, books);
     }
 
-    //Ta Bort senare
-    private int userIntSelection() {
-        int answer;
-        while (true) {
-            try {
-                answer = Integer.parseInt(scanner.nextLine());
-                break;
-            } catch (Exception e) {
-                System.out.println("Wrong input. Please try again!");
-            }
-        }
-        return answer;
-    }
-
-    private void seeBookAttributes(Account loggedInPerson) {
+    private void seeBookAttributes(Account loggedInPerson, ArrayList<Book> books) {
         System.out.println("Select a book to see description/option or press 0 to exit");
         int bookChoice = MethodUtility.intSelectionArray(books.size());
         if (bookChoice != -1) {
@@ -142,74 +128,25 @@ public class BookList {
         }
     }
 
-    //Forsätt härifrån
-    // Working on fixing old methods
-    public ArrayList<Book> searchThroughArray (String option) {
+    public void searchThroughArray (Account loggedInPerson, String option) {
         ArrayList<Book> booksFound = new ArrayList<>();
+        int j = 1;
         for (int i = 0; i < books.size(); i++) {
             if (option.equals("ShowAllAvailableBooks")) {
-                if (books.get(i).isAvailable())
+                if (books.get(i).isAvailable()) {
                     booksFound.add(books.get(i));
-            } else if (option.equals("ShowAllBorrowedBooks")) {
-                if (!books.get(i).isAvailable())
-                    booksFound.add(books.get(i));
-            }
-        }
-        return booksFound;
-    }
-
-    private void printBookNames(ArrayList<Book> books) {
-        for (int i = 0; i < books.size(); i++)
-            System.out.println(i+1 + " " + books.get(i).getTitle());
-    }
-
-    public void selectBook(Account loggedInPerson, ArrayList<Book> books) {
-        while (true) {
-            printBookNames(books);
-            System.out.println("Select a book to see description/option or press 0 to exit");
-            int bookChoice = userIntSelection();
-            if (bookChoice == 0)
-                return;
-
-            try {
-                System.out.println(books.get(bookChoice-1));
-            } catch (Exception e) {
-                System.out.println("This book do not exist");
-                continue;
-            }
-            bookMethods(loggedInPerson, books.get(bookChoice-1));
-        }
-    }
-
-    private void bookMethods (Account loggedInPerson, Book book) {
-        while (true) {
-            System.out.println("What do you want to do?");
-            if (loggedInPerson instanceof User) {
-                System.out.println("[1] Rent the book");
-            }
-
-            System.out.println("[0] Return to menu");
-            String answer = scanner.nextLine();
-
-            if (loggedInPerson instanceof User) {
-                switch (answer) {
-                    case "1":
-                        User person = (User)loggedInPerson;
-                        book.setAvailable(false);
-                        person.getBorrowedBooks().add(book);
-                        return;
-                    case "0":
-                        return;
-                    default:
-                        System.out.println("Sorry wrong input!");
-                        break;
+                    System.out.printf("%d. %s%n", j+1, books.get(i).getTitle());
+                    j++;
                 }
-            } else {
-                if (answer.equals("0"))
-                    return;
-                else
-                    System.out.println("Sorry wrong input!");
+
+            } else if (option.equals("ShowAllBorrowedBooks")) {
+                if (!books.get(i).isAvailable()) {
+                    booksFound.add(books.get(i));
+                    System.out.printf("%d. %s%n", j+1, books.get(i).getTitle());
+                    j++;
+                }
             }
         }
+        seeBookAttributes(loggedInPerson, booksFound);
     }
 }
