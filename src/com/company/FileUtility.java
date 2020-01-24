@@ -2,10 +2,7 @@ package com.company;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.util.List;
 
 public class FileUtility {
@@ -23,6 +20,8 @@ public class FileUtility {
         Path path = Paths.get(filename);
         try (ObjectInputStream in = new ObjectInputStream(Files.newInputStream(path))) {
             return in.readObject();
+        } catch (NoSuchFileException e) {
+            System.out.println("No file to load.");
         } catch (Exception e) {
             e.printStackTrace();
         }

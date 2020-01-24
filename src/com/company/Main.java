@@ -1,10 +1,13 @@
 package com.company;
 
-import java.util.ArrayList;
-
 public class Main {
 
     public static void main(String[] args) {
-        Program program = new Program();
+        Program program = (Program) FileUtility.loadObject("biblioteksapplikation.ser");
+        if (program == null) {
+            program = new Program();
+        }
+        program.startMenu();
+        FileUtility.saveObject("biblioteksapplikation.ser", program);
     }
 }

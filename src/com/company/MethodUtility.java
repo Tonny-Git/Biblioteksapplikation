@@ -1,10 +1,9 @@
 package com.company;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MethodUtility {
-    private static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
 
     private MethodUtility() {
     }

@@ -1,25 +1,20 @@
 package com.company;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class Program {
+public class Program implements Serializable {
     private ArrayList<Admin> admins = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
     private BookList bookList = new BookList();
-    private Scanner scanner = new Scanner(System.in);
 
-    public Program() {
-        startMenu();
-    }
-
-    private void startMenu() {
+    public void startMenu() {
         while (true) {
             System.out.println("Welcome, please log in.");
             System.out.println("[1] Log in");
             System.out.println("[2] Create a new account");
             System.out.println("[0] Exit");
-            String answer = scanner.nextLine();
+            String answer = MethodUtility.scanner.nextLine();
 
             switch (answer) {
                 case "1":
@@ -43,7 +38,7 @@ public class Program {
             System.out.println("[1] For user account");
             System.out.println("[2] For admin account");
             System.out.println("[0] Go back to menu");
-            String answer = scanner.nextLine();
+            String answer = MethodUtility.scanner.nextLine();
 
             String userName = "";
             String password = "";
@@ -89,7 +84,7 @@ public class Program {
 
         while (true) {
             System.out.println("Please enter password for " + account.getUsername() + " or press 0 to exit");
-            String passwordAnswer = scanner.nextLine();
+            String passwordAnswer = MethodUtility.scanner.nextLine();
             if (account.isPasswordCorrect(passwordAnswer)) {
                 if (account instanceof User)
                     loggedInUserMenu((User) account);
@@ -111,7 +106,7 @@ public class Program {
             System.out.println("[3] Search after book.");
             System.out.println("[4] Show all available books.");
             System.out.println("[0] Log out");
-            String answer = scanner.nextLine();
+            String answer = MethodUtility.scanner.nextLine();
 
             switch (answer) {
                 case "1":
@@ -135,7 +130,6 @@ public class Program {
         }
     }
 
-    //Fixa Remove book
     private void loggedInAdminMenu(Admin loggedInPerson) {
         while (true) {
             System.out.println("[1] See all books.");
@@ -144,7 +138,7 @@ public class Program {
             System.out.println("[4] Show all borrowed books");
             System.out.println("[5] Search after an user");
             System.out.println("[0] Log out");
-            String answer = scanner.nextLine();
+            String answer = MethodUtility.scanner.nextLine();
 
             switch (answer) {
                 case "1":
@@ -188,7 +182,7 @@ public class Program {
 
     private void searchAfterUser() {
         System.out.println("Enter name of an user");
-        String answer = scanner.nextLine().toLowerCase();
+        String answer = MethodUtility.scanner.nextLine().toLowerCase();
         for (User user : users) {
             if (answer.toLowerCase().equals(user.getUsername().toLowerCase())) {
                 user.printNameOfBorrowedBooks();

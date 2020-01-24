@@ -13,10 +13,6 @@ public class User extends Account {
         return borrowedBooks;
     }
 
-    public void setBorrowedBooks(ArrayList<Book> borrowedBooks) {
-        this.borrowedBooks = borrowedBooks;
-    }
-
     public void printNameOfBorrowedBooks() {
         for (int i = 0; i < borrowedBooks.size(); i++) {
             System.out.println(i+1 + " " + borrowedBooks.get(i).getTitle());

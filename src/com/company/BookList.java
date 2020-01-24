@@ -1,18 +1,10 @@
 package com.company;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class BookList {
+public class BookList implements Serializable {
     private ArrayList<Book> books = new ArrayList<>();
-    private Scanner scanner = new Scanner(System.in);
-
-    //Ta Bort senare
-    public BookList() {
-        books.add(new Book("Harry Potter", "Jk Rowling", "Harry and his friends"));
-        books.add(new Book("Harry Potter 2", "Jk Rowling", "Harry and his friends"));
-        books.add(new Book("Zelda", "Nintendo", "Link try to save Zelda"));
-    }
 
     public void seeAllBooks(Account loggedInPerson) {
         for (int i = 0; i < books.size(); i++) {
@@ -44,7 +36,7 @@ public class BookList {
             System.out.println("What do you want to do?");
             System.out.println("[1] Rent the book");
             System.out.println("[0] Return to menu");
-            String answer = scanner.nextLine();
+            String answer = MethodUtility.scanner.nextLine();
 
             switch (answer) {
                 case "1":
@@ -61,21 +53,21 @@ public class BookList {
 
     public void addNewBook() {
         System.out.println("Enter title");
-        String title = scanner.nextLine();
+        String title = MethodUtility.scanner.nextLine();
         System.out.println("Enter author");
-        String author = scanner.nextLine();
+        String author = MethodUtility.scanner.nextLine();
         System.out.println("Enter description");
-        String description = scanner.nextLine();
+        String description = MethodUtility.scanner.nextLine();
 
         books.add(new Book(title, author, description));
         System.out.println(title + " got added to the app\n" + "Press enter to continue. . .");
-        scanner.nextLine();
+        MethodUtility.scanner.nextLine();
     }
 
     public void removeOldBook(int bookChoice) {
         if (books.get(bookChoice).isAvailable()) {
             Book book = books.remove(bookChoice);
-            System.out.println("You removed " + book + " from the list.");
+            System.out.println("You removed " + book.getTitle() + " from the list.");
         } else {
             System.out.println("You can't remove a borrowed book!");
         }
@@ -109,14 +101,14 @@ public class BookList {
 
     public void searchAfterBook(Account loggedInPerson) {
         System.out.println("Enter title or author of an book");
-        String answer = scanner.nextLine().toLowerCase();
+        String answer = MethodUtility.scanner.nextLine().toLowerCase();
         ArrayList<Book> booksFound = new ArrayList<>();
 
         int i = 1;
         for (Book book : books) {
             if (answer.equals(book.getTitle().toLowerCase()) || answer.equals(book.getAuthor().toLowerCase())) {
                 booksFound.add(book);
-                System.out.println(i+1 + " " + book.getTitle());
+                System.out.println(i + " " + book.getTitle());
                 i++;
             }
         }
@@ -129,6 +121,7 @@ public class BookList {
             System.out.println("Select a book or press 0 to exit");
             int bookAnswer = MethodUtility.intSelectionArray(booksFound.size());
             if (bookAnswer != -1) {
+                System.out.println(booksFound.get(bookAnswer));
                 bookOptions(loggedInPerson, booksFound.get(bookAnswer));
             }
         }
@@ -141,14 +134,14 @@ public class BookList {
             if (option.equals("ShowAllAvailableBooks")) {
                 if (books.get(i).isAvailable()) {
                     booksFound.add(books.get(i));
-                    System.out.printf("%d. %s%n", j+1, books.get(i).getTitle());
+                    System.out.printf("%d. %s%n", j, books.get(i).getTitle());
                     j++;
                 }
 
             } else if (option.equals("ShowAllBorrowedBooks")) {
                 if (!books.get(i).isAvailable()) {
                     booksFound.add(books.get(i));
-                    System.out.printf("%d. %s%n", j+1, books.get(i).getTitle());
+                    System.out.printf("%d. %s%n", j, books.get(i).getTitle());
                     j++;
                 }
             }

@@ -1,6 +1,8 @@
 package com.company;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
     private String title;
     private String author;
     private String description;
@@ -31,7 +33,7 @@ public class Book {
     @Override
     public String toString() {
         return  "" + title +
-                " by " + author +
+                "\n" + author +
                 "\n" + description +
                 "\n" + (isAvailable ? "This book can be rented" : "This book is already rented");
     }
